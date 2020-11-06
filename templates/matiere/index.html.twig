@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProduitController!{% endblock %}
+
+{% block body %}
+<h1>Matieres</h1>
+
+{% include 'matiere/liste.html.twig' with {'matieres': matieres} %}
+
+    <h2>Ajouter une matiere</h2>
+    {{form(ajout_matiere)}}
+
+{% endblock %}

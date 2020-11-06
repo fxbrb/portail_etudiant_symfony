@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ModuleController!{% endblock %}
+
+{% block body %}
+<h1>Module</h1>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Slug</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for module in modules %}
+        <tr>
+            <td>
+                <a href="{{path('show_module', {'slug': module.slug})}}">
+                    {{module.nom}}
+                </a>
+            </td>
+            <td>{{module.slug}}</td>
+            
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="2">Il n'y a pas de module</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+    <h2>Ajouter un module</h2>
+    {{form(ajout)}}
+{% endblock %}

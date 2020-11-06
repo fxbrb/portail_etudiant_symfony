@@ -1,0 +1,7 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<h1>{{module.nom}}</h1>
+
+	{% include 'matiere/liste.html.twig' with {'matieres': module.matieres} %}
+{% endblock %}

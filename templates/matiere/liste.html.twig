@@ -1,0 +1,28 @@
+<table border="1">
+	<thead>
+		<tr>
+			<th>Nom</th>
+			<th>Description</th>
+			<th>Module</th>
+			<th>Slug</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for matiere in matieres %}
+		<tr>
+			<td>
+				<a href="{{path('show_matiere', {'slug': matiere.slug})}}">
+					{{matiere.nom}}
+				</a>
+			</td>
+			<td>{{matiere.description}}</td>
+			<td>{{matiere.module}}</td>
+			<td>{{matiere.slug}}</td>
+		</tr>
+	{% else %}
+		<tr>
+			<td colspan="5">Il n'y a aucune matiere</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
