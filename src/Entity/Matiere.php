@@ -3,10 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\MatiereRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=MatiereRepository::class)
+ * @UniqueEntity("nom")
  */
 class Matiere
 {
@@ -24,11 +28,13 @@ class Matiere
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $slug;
 
     /**
      * @ORM\ManyToOne(targetEntity=Module::class, inversedBy="matieres")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $module;
 
@@ -36,6 +42,11 @@ class Matiere
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $description;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Note::class, mappedBy="matiere")
+     */
+    private $notes;
 
     public function getId(): ?int
     {
@@ -86,6 +97,36 @@ class Matiere
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Note[]
+     */
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addNote(Note $note): self
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes[] = $note;
+            $note->setMatiere($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNote(Note $note): self
+    {
+        if ($this->notes->removeElement($note)) {
+            // set the owning side to null (unless already changed)
+            if ($note->getMatiere() === $this) {
+                $note->setMatiere(null);
+            }
+        }
 
         return $this;
     }

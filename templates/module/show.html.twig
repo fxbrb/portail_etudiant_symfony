@@ -3,5 +3,8 @@
 {% block body %}
 	<h1>{{module.nom}}</h1>
 
+      <h2>Modifier le module</h2>
+    {{ form(maj) }}
+
 	{% include 'matiere/liste.html.twig' with {'matieres': module.matieres} %}
 {% endblock %}

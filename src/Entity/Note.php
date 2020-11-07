@@ -27,6 +27,11 @@ class Note
      */
     private $commentaire;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Matiere::class, inversedBy="notes")
+     */
+    private $matiere;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -55,4 +60,17 @@ class Note
 
         return $this;
     }
+
+    public function getMatiere(): ?Matiere
+    {
+        return $this->matiere;
+    }
+
+    public function setMatiere(?Matiere $matiere): self
+    {
+        $this->matiere = $matiere;
+
+        return $this;
+    }
+
 }

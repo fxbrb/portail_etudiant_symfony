@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Matiere;
 use App\Form\MatiereType;
+use App\Repository\MatiereRepository;
+use App\Repository\NoteRepository;
 use App\Service\Utile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,14 +45,52 @@ class MatiereController extends AbstractController
     /**
      * @Route("/matiere/{slug}", name="show_matiere")
      */
-    public function show(Matiere $matiere = null){
+    public function show(Matiere $matiere, NoteRepository $noteRepository){
         if($matiere == null){
             $this->addFlash('error', 'Matiere introuvable');
             return $this->redirectToRoute('matiere');
         }
 
+        $notes = $noteRepository->findBy(['matiere' => $matiere] ); // on recherche l'ensemble des notes dont la matière a un id similaire a celui transmis
+
+        $compte = count($notes); // création d'une variable contenant le nombre total de notes
+
+        $somme = array_sum($notes); // on calcule la somme de toutes les notes
+            // attention il faut absolument que les valeurs sortant de la bdd soient des INT
+        
+        $moyenne = $somme / $compte; // on calcule bêtement la moyenne
+
+
+
+
         return $this->render('matiere/show.html.twig', [
-            'matiere' => $matiere
+            'matiere' => $matiere,
+            'moyenne' => $moyenne
         ]);
+    }
+
+       /**
+     * @Route("/matiere/delete/{slug}", name="delete_matiere")
+     */
+
+    public function delete(Matiere $matiere = null){
+        if($matiere == null){
+            $this->addFlash(
+                'erreur',
+                'Matiere introuvable'
+            );
+            return $this->redirectToRoute('matiere');
+           }
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($matiere);
+            $em->flush();
+
+            $this->addFlash(
+                'success',
+                'Matiere supprimée'
+            );
+
+            return $this->redirectToRoute('matiere');
+        
     }
 }

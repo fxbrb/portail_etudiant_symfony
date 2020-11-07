@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ModuleController!{% endblock %}
+{% block title %}Notes: ANNEE 3 - BACHELOR CHEF DE PROJET DIGITAL - OP.DEVELOPPEMENT WEB{% endblock %}
 
 {% block body %}
 <h1>Module</h1>
@@ -10,6 +10,7 @@
         <tr>
             <th>Nom</th>
             <th>Slug</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -21,6 +22,11 @@
                 </a>
             </td>
             <td>{{module.slug}}</td>
+            <td>
+                <a href="{{ path('delete', {'slug': module.slug}) }}">
+                    Supprimer
+                </a>
+            </td>
             
         </tr>
     {% else %}
