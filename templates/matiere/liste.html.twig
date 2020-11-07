@@ -18,11 +18,6 @@
 			<td>{{matiere.description}}</td>
 			<td>{{matiere.module}}</td>
 			<td>{{matiere.slug}}</td>
-            <td>
-                <a href="{{ path('delete_matiere', {'slug': matiere.slug}) }}">
-                    Supprimer
-                </a>
-            </td>
 		</tr>
 	{% else %}
 		<tr>

@@ -3,14 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\MatiereRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=MatiereRepository::class)
- * @UniqueEntity("nom")
  */
 class Matiere
 {
@@ -28,13 +26,11 @@ class Matiere
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
      */
     private $slug;
 
     /**
      * @ORM\ManyToOne(targetEntity=Module::class, inversedBy="matieres")
-     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $module;
 
@@ -47,6 +43,11 @@ class Matiere
      * @ORM\OneToMany(targetEntity=Note::class, mappedBy="matiere")
      */
     private $notes;
+
+    public function __construct()
+    {
+        $this->notes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {

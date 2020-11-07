@@ -42,53 +42,14 @@ class ModuleController extends AbstractController
     /**
      * @Route("/module/{slug}", name="show_module")
      */
-    public function show(Module $module = null, Request $request){
+    public function show(Module $module = null){
         if($module == null){
             $this->addFlash('error', 'Module introuvable');
             return $this->redirectToRoute('home');
         }
 
-        $form = $this->createForm(ModuleType::class, $module); 
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){ 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($module); 
-            $em->flush(); 
-
-            $this->addFlash(
-                'success',
-                'Module mit a jour'
-            );
-        }
-
         return $this->render('module/show.html.twig', [
-            'module' => $module,
-            'maj' => $form->createView()
+            'module' => $module
         ]);
-    }
-
-     /**
-     * @Route("/module/delete/{slug}", name="delete")
-     */
-
-    public function delete(Module $module = null){
-        if($module == null){
-            $this->addFlash(
-                'erreur',
-                'Module introuvable'
-            );
-            return $this->redirectToRoute('home');
-           }
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($module);
-            $em->flush();
-
-            $this->addFlash(
-                'success',
-                'Module supprimée'
-            );
-
-            return $this->redirectToRoute('home');
-        
     }
 }

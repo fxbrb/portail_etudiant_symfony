@@ -31,7 +31,7 @@ class MatiereController extends AbstractController
             $em->persist($matiere);
             $em->flush();
 
-            $this->addFlash('success', 'Matiere ajouté');
+            $this->addFlash('success', 'Matiere ajoutée');
         }
     
         $matieres = $em->getRepository(Matiere::class)->findAll();
@@ -55,13 +55,14 @@ class MatiereController extends AbstractController
 
         $compte = count($notes); // création d'une variable contenant le nombre total de notes
 
-        $somme = array_sum($notes); // on calcule la somme de toutes les notes
-            // attention il faut absolument que les valeurs sortant de la bdd soient des INT
-        
+$somme = 0; // on additione tout
+
+foreach ($notes as $note){
+    $somme = $somme + $note->getNote();
+}
+        // attention il faut absolument que les valeurs sortant de la bdd soient des INT
+
         $moyenne = $somme / $compte; // on calcule bêtement la moyenne
-
-
-
 
         return $this->render('matiere/show.html.twig', [
             'matiere' => $matiere,
@@ -69,60 +70,4 @@ class MatiereController extends AbstractController
         ]);
     }
 
-<<<<<<< HEAD
-       /**
-     * @Route("/matiere/delete/{slug}", name="delete_matiere")
-     */
-
-    public function delete(Matiere $matiere = null){
-        if($matiere == null){
-            $this->addFlash(
-                'erreur',
-                'Matiere introuvable'
-            );
-            return $this->redirectToRoute('matiere');
-           }
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($matiere);
-            $em->flush();
-
-            $this->addFlash(
-                'success',
-                'Matiere supprimée'
-            );
-
-            return $this->redirectToRoute('matiere');
-        
-=======
-    /**
-     * @Route("/moyenne_matiere/", name="moyenne-matiere")
-     */
-
-    public function moyennematiere(Request $request, NoteRepository $noteRepository, MatiereRepository $matiereRepository){
-
-        if ($request->isMethod('POST')) {
-
-            $matiereid = $request->request->get('matiereid'); // on récupère l'id de la matière transmis par le formulaire
-
-            $matiere = $matiereRepository->findBy(['id' => $matiereid] ); // on recherche la matière concernée pour la réponse avec le twig
-
-            $notes = $noteRepository->findBy(['id' => $matiereid] ); // on recherche l'ensemble des notes dont la matière a un id similaire a celui transmis
-
-            $compte = count($notes); // création d'une variable contenant le nombre total de notes
-
-            $somme = array_sum($notes); // on calcule la somme de toutes les notes
-            // attention il faut absolument que les valeurs sortant de la bdd soient des INT
-
-            $moyenne = $somme / $compte; // on calcule bêtement la moyenne
-
-            return $this->render('affichage_moyenne_matiere.html.twig', ['matiere' => $matiere->getNom(), 'moyenne' => $moyenne]); // redirection vers la page d'affichage
-        }
-
-        else {
-            return $this->render('erreur_moyenne.html.twig'); // redirection vers la page d'erreur
-        }
-
-
->>>>>>> 30cd15a709e7d997c34145f3a2f90a7b7f454d81
-    }
 }

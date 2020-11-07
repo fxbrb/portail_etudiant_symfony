@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<h1>{{matiere.nom}}</h1>
-<p>{{matiere.description}}</p>
-<p>{{matiere.module}}</p>
-<p>{{matiere.slug}}</p>
-<p>{{matiere.moyenne}}</p>
+	<h1>{{matiere.nom}}</h1>
+	<h1>Moyenne des notes : {{moyenne}}</h1>
+
+
+	<a href="{{ path('matiere') }}">Retour</a>
 {% endblock %}
